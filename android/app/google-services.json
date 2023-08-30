@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "395090870833",
+    "project_id": "compress-video-69848",
+    "storage_bucket": "compress-video-69848.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:395090870833:android:0843888250baf3ce344b10",
+        "android_client_info": {
+          "package_name": "com.meitech.videocompressor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "395090870833-d5madbqqvao22sdulcdprqmtshc25voq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMLEUIZXGRUL1cFLAiUhY6qJCQyqju8yM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "395090870833-d5madbqqvao22sdulcdprqmtshc25voq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

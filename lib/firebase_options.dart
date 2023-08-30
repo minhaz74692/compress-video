@@ -26,10 +26,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -53,10 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDXstxcQ4oQUShTtmcM2LmA7ymqM8m8b1M',
-    appId: '1:765131697197:android:806e9f636ca27c65825ca4',
-    messagingSenderId: '765131697197',
-    projectId: 'video-compressor-b2a17',
-    storageBucket: 'video-compressor-b2a17.appspot.com',
+    apiKey: 'AIzaSyDMLEUIZXGRUL1cFLAiUhY6qJCQyqju8yM',
+    appId: '1:395090870833:android:0843888250baf3ce344b10',
+    messagingSenderId: '395090870833',
+    projectId: 'compress-video-69848',
+    storageBucket: 'compress-video-69848.appspot.com',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyDxfyG1VfrCmn_XkdXNa-UDf6fSP5yS7Fw',
+    appId: '1:395090870833:ios:06268f12897199a0344b10',
+    messagingSenderId: '395090870833',
+    projectId: 'compress-video-69848',
+    storageBucket: 'compress-video-69848.appspot.com',
+    iosClientId: '395090870833-q0qnrc9lanvpih6enpocg6djkj0thevm.apps.googleusercontent.com',
+    iosBundleId: 'com.example.compressVideo',
   );
 }

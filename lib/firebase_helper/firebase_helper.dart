@@ -10,7 +10,7 @@ class FirebaseHelper {
       //Compress Video File
       final compressedInfo = await VideoCompress.compressVideo(
         videoFile.path,
-        quality: VideoQuality.MediumQuality,
+        quality: VideoQuality.LowQuality,
         deleteOrigin: false,
         includeAudio: true,
       );

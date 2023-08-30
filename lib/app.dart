@@ -2,6 +2,7 @@
 
 import 'dart:io';
 import 'package:compress_video/firebase_helper/firebase_helper.dart';
+import 'package:compress_video/utils/show_massege.dart';
 import 'package:compress_video/widgets/video_player.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -50,8 +51,16 @@ class _VideoUploadScreenState extends State<VideoUploadScreen> {
     setState(() {
       _isloading = true;
     });
-    await FirebaseHelper().uploadVideo(_videoFile!);
-
+    try {
+      await FirebaseHelper().uploadVideo(_videoFile!);
+    } catch (e) {
+      print('Upload and compression error: $e');
+      showMessage('Video compress and upload failed!');
+      setState(() {
+        _isloading = false;
+      });
+    }
+    showMessage('Video compress and upload successfully!');
     setState(() {
       _isloading = false;
     });
@@ -76,6 +85,7 @@ class _VideoUploadScreenState extends State<VideoUploadScreen> {
           : Center(
               child: SingleChildScrollView(
                 child: Container(
+                  padding: EdgeInsets.only(bottom: 90),
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
                   child: VideoListScreen(),

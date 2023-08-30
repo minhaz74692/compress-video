@@ -64,7 +64,7 @@ class VideoPlayerWidget extends StatefulWidget {
 class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   late VideoPlayerController _controller;
   bool isPlaying = false;
-  
+
   @override
   void initState() {
     super.initState();
@@ -82,10 +82,15 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
+    // if (_controller.value.isUndefinedOrNull) {
+    //   setState(() {
+    //     isPlaying = false;
+    //   });
+    // }
     return Container(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height / 2,
-        margin: EdgeInsets.symmetric(vertical: 10),
+        height: MediaQuery.of(context).size.width,
+        margin: EdgeInsets.only(top: 5),
         child: _controller.value.isInitialized
             ? Stack(
                 children: [
@@ -93,12 +98,23 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                     aspectRatio: 1,
                     child: VideoPlayer(_controller),
                   ),
+                  Visibility(
+                    visible: !isPlaying,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.width,
+                      child: Image.network(
+                        'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1513&q=80',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
                   Positioned(
                     left: MediaQuery.of(context).size.width / 2 - 40,
                     top: MediaQuery.of(context).size.width / 2 - 40,
                     child: GestureDetector(
                       onTap: () {
-                        if (isPlaying) {
+                        if (_controller.value.isPlaying) {
                           setState(() {
                             _controller.pause();
                             isPlaying = false;
