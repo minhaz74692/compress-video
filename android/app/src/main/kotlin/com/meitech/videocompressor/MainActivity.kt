@@ -1,4 +1,4 @@
-package com.example.compress_video
+package com.meitech.videocompressor
 
 import io.flutter.embedding.android.FlutterActivity
 

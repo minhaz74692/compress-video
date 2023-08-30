@@ -13,3 +13,17 @@
 //     print('Error picking video');
 //   }
 // }
+
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
+
+pickVideo() async {
+  FilePickerResult? result =
+      await FilePicker.platform.pickFiles(type: FileType.video);
+
+  if (result != null) {
+    return File(result.files.single.path!);
+    
+  } else {}
+}

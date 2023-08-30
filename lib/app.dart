@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, avoid_print
 
 import 'dart:io';
+import 'package:compress_video/firebase_helper/firebase_helper.dart';
+import 'package:compress_video/widgets/video_player.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:video_compress_plus/video_compress_plus.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -46,34 +46,14 @@ class _VideoUploadScreenState extends State<VideoUploadScreen> {
       print('No video file selected');
       return;
     }
-    try {
-      setState(() {
-        _isloading = true;
-      });
-      final info = await VideoCompress.compressVideo(
-        _videoFile!.path,
-        quality: VideoQuality.LowQuality,
-        deleteOrigin: false,
-        includeAudio: true,
-      );
+    setState(() {
+      _isloading = true;
+    });
+    await FirebaseHelper().uploadVideo(_videoFile!);
 
-      Reference storageRef =
-          FirebaseStorage.instance.ref().child('videos/${DateTime.now()}.mp4');
-      UploadTask uploadTask = storageRef.putFile(File(info!.path!));
-
-      TaskSnapshot snapshot = await uploadTask.whenComplete(() => null);
-
-      if (snapshot.state == TaskState.success) {
-        String downloadUrl = await storageRef.getDownloadURL();
-
-        print('Video download URL: $downloadUrl');
-        setState(() {
-          _isloading = false;
-        });
-      }
-    } catch (error) {
-      print('Error uploading video: $error');
-    }
+    setState(() {
+      _isloading = false;
+    });
   }
 
   @override
@@ -99,6 +79,16 @@ class _VideoUploadScreenState extends State<VideoUploadScreen> {
                   ElevatedButton(
                     onPressed: _uploadVideo,
                     child: Text('Upload Video'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  VideoListScreen()));
+                    },
+                    child: Text('Video Screen'),
                   ),
                 ],
               ),
