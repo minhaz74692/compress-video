@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, library_private_types_in_public_api
+// ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, deprecated_member_use
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -12,11 +12,9 @@ class VideoListScreen extends StatefulWidget {
 }
 
 class _VideoListScreenState extends State<VideoListScreen> {
-  late List<String> videoUrls;
+  List<String> videoUrls = [];
 
   Future<List<String>> fetchVideoUrls() async {
-    final List<String> videoUrls = [];
-
     try {
       final ListResult result =
           await FirebaseStorage.instance.ref('videos').list();
@@ -33,27 +31,24 @@ class _VideoListScreenState extends State<VideoListScreen> {
 
   @override
   void initState() {
-    super.initState();
     fetchVideoUrls().then((urls) {
       setState(() {
         videoUrls = urls;
       });
     });
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Video List'),
-      ),
-      body: ListView.builder(
-        itemCount: videoUrls.length,
-        itemBuilder: (context, index) {
-          return VideoPlayerWidget(videoUrl: videoUrls[index]);
-        },
-      ),
-    );
+    return videoUrls.isNotEmpty
+        ? ListView.builder(
+            itemCount: videoUrls.length,
+            itemBuilder: (context, index) {
+              return VideoPlayerWidget(videoUrl: videoUrls[index]);
+            },
+          )
+        : Center(child: CircularProgressIndicator());
   }
 }
 
@@ -68,7 +63,8 @@ class VideoPlayerWidget extends StatefulWidget {
 
 class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   late VideoPlayerController _controller;
-
+  bool isPlaying = false;
+  
   @override
   void initState() {
     super.initState();
@@ -76,20 +72,56 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
       ..initialize().then((_) {
         setState(() {});
       });
-    _controller.play();
+
+    // if (isPlaying) {
+    //   _controller.play();
+    // } else {
+    //   _controller.pause();
+    // }
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(8.0),
-      child: _controller.value.isInitialized
-          ? AspectRatio(
-              aspectRatio: _controller.value.aspectRatio,
-              child: VideoPlayer(_controller),
-            )
-          : CircularProgressIndicator(),
-    );
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height / 2,
+        margin: EdgeInsets.symmetric(vertical: 10),
+        child: _controller.value.isInitialized
+            ? Stack(
+                children: [
+                  AspectRatio(
+                    aspectRatio: 1,
+                    child: VideoPlayer(_controller),
+                  ),
+                  Positioned(
+                    left: MediaQuery.of(context).size.width / 2 - 40,
+                    top: MediaQuery.of(context).size.width / 2 - 40,
+                    child: GestureDetector(
+                      onTap: () {
+                        if (isPlaying) {
+                          setState(() {
+                            _controller.pause();
+                            isPlaying = false;
+                          });
+                        } else {
+                          setState(() {
+                            _controller.play();
+                            isPlaying = true;
+                          });
+                        }
+                      },
+                      child: Icon(
+                        isPlaying ? Icons.pause : Icons.play_arrow,
+                        size: 80,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            : Center(
+                child: CircularProgressIndicator(),
+              ));
   }
 
   @override
